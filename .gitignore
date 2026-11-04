@@ -1,0 +1,24 @@
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets et données
+.env
+.env.*
+!.env.example
+data/
+.dev-admin.txt
+*.db
+*.db-shm
+*.db-wal
+
+# Captures d'origine (versions optimisées dans src/db/seed-data/img)
+image/
+
+# Divers
+.DS_Store
+Thumbs.db
+*.log
