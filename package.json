@@ -16,6 +16,8 @@
     "db:migrate": "tsx --conditions=react-server scripts/setup.ts",
     "admin:create": "tsx --conditions=react-server scripts/admin-create.ts",
     "admin:reset": "tsx --conditions=react-server scripts/admin-reset.ts",
+    "setup:prod": "tsx --env-file=.env.vercel --conditions=react-server scripts/setup.ts",
+    "admin:create:prod": "tsx --env-file=.env.vercel --conditions=react-server scripts/admin-create.ts",
     "import:gitbook": "tsx scripts/import-gitbook.ts",
     "pentest": "node scripts/pentest.mjs",
     "audit:deps": "npm audit --audit-level=low"

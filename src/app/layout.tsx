@@ -48,6 +48,12 @@ const fonts = [rye, sancreek, ewert, smokum, holtwood, playfair, fell, caslon, o
   .map((f) => f.variable)
   .join(' ');
 
+/**
+ * Chaque page lit la base et reçoit un nonce CSP par requête : rien ne doit être figé au build.
+ * `next build` n'a ainsi besoin ni de la base ni des secrets, ce qui est le cas sur Vercel.
+ */
+export const dynamic = 'force-dynamic';
+
 export const viewport: Viewport = {
   themeColor: '#0f0a07',
   colorScheme: 'dark',

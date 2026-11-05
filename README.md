@@ -69,9 +69,29 @@ Le site a besoin de Node.js et d'une base. Deux options, le code est le même.
 Vercel n'a pas de disque permanent : la base doit être chez [Turso](https://turso.tech) (compatible SQLite).
 
 1. Créez une base Turso et récupérez son URL et son jeton.
-2. Dans Vercel, renseignez `DATABASE_URL` (`libsql://...`), `DATABASE_AUTH_TOKEN`, `APP_ORIGIN`,
-   `SESSION_SECRET`, `PASSWORD_PEPPER`, `ENCRYPTION_KEY` et `TRUSTED_IP_HEADER=x-vercel-forwarded-for`.
-3. Depuis votre poste, avec ces mêmes variables, lancez `npm run setup` puis `npm run admin:create`.
+2. Créez un fichier `.env.vercel` à la racine (ignoré par Git), avec **de nouveaux secrets** :
+
+   ```
+   DATABASE_URL=libsql://votre-base.turso.io
+   DATABASE_AUTH_TOKEN=...
+   APP_ORIGIN=https://votre-projet.vercel.app
+   SESSION_SECRET=...
+   PASSWORD_PEPPER=...
+   ENCRYPTION_KEY=...
+   TRUSTED_IP_HEADER=x-vercel-forwarded-for
+   ```
+
+3. Depuis votre poste, remplissez la base et créez le compte propriétaire :
+
+   ```bash
+   npm run setup:prod
+   npm run admin:create:prod
+   ```
+
+4. Dans Vercel, importez ce fichier (**Settings → Environment Variables → Import .env**), puis relancez un déploiement.
+
+Le build n'a besoin ni de la base ni des secrets, mais le site refuse de démarrer sans ces variables.
+Vercel limite les requêtes à 4,5 Mo : une image plus lourde doit être réduite avant l'envoi dans la médiathèque.
 
 ## Sauvegarder les secrets
 
