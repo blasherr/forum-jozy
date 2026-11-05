@@ -39,7 +39,7 @@ function csp(nonce: string, publicPage: boolean): string {
   if (https) directives.push('upgrade-insecure-requests');
   // Trusted Types : bloque au niveau du navigateur toute écriture de HTML brut dans le DOM.
   // L'éditeur du panel (ProseMirror) en a besoin pour le copier-coller : il reste hors périmètre.
-  // La seule politique admise est celle de public/tt-policy.js.
+  // La seule politique admise est celle de src/instrumentation-client.ts.
   if (!isDev && publicPage) directives.push(`require-trusted-types-for 'script'`, `trusted-types default`);
   return directives.join('; ');
 }
@@ -90,7 +90,8 @@ export function proxy(req: NextRequest) {
     pathname.startsWith('/admin') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/connexion') ||
-    pathname.startsWith('/apercu');
+    pathname.startsWith('/apercu') ||
+    pathname.startsWith('/design/');
   if (isPrivate) {
     response.headers.set('Cache-Control', 'no-store, max-age=0');
     response.headers.set('X-Robots-Tag', 'noindex, nofollow');

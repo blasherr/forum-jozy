@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { AdminBack } from '@/components/admin/AdminBack';
 import { AdminProvider } from '@/components/admin/context';
-import { Sidebar } from '@/components/admin/Sidebar';
+import { AdminShell } from '@/components/admin/Sidebar';
 import { getAuth } from '@/lib/security/session';
 import '@/styles/rich.css';
 import '@/styles/admin.css';
@@ -19,13 +18,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (!auth) redirect('/connexion');
   return (
     <AdminProvider csrf={auth.csrf} role={auth.user.role} name={auth.user.name}>
-      <div className="admin">
-        <Sidebar />
-        <main className="admin-main">
-          <AdminBack />
-          {children}
-        </main>
-      </div>
+      <AdminShell email={auth.user.email}>{children}</AdminShell>
     </AdminProvider>
   );
 }

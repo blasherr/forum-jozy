@@ -15,6 +15,7 @@ import {
 import type { RichDoc } from '@/lib/richtext/types';
 import { safeHref } from '@/lib/richtext/url';
 import { Alignment, Callout, FontChoice, HighlightColor, InkColor, SizedImage, SizeChoice } from './extensions';
+import { Icon } from './Icon';
 import { MediaPicker } from './MediaPicker';
 
 function Btn({
@@ -253,10 +254,10 @@ function Ribbon({ editor }: { editor: Editor }) {
         <div className="ribbon-body">
           <Group label="Annuler">
             <Btn editor={editor} title="Annuler (Ctrl+Z)" disabled={!s.canUndo} onClick={(c) => c.undo().run()}>
-              ↶
+              <Icon name="undo" />
             </Btn>
             <Btn editor={editor} title="Rétablir (Ctrl+Y)" disabled={!s.canRedo} onClick={(c) => c.redo().run()}>
-              ↷
+              <Icon name="redo" />
             </Btn>
           </Group>
 
@@ -328,7 +329,7 @@ function Ribbon({ editor }: { editor: Editor }) {
                   onClear={() => editor.chain().focus().unsetMark('highlightColor').run()}
                 />
                 <Btn editor={editor} title="Effacer la mise en forme" onClick={(c) => c.unsetAllMarks().clearNodes().run()}>
-                  ⌫
+                  <Icon name="eraser" />
                 </Btn>
               </div>
             </div>
@@ -338,33 +339,33 @@ function Ribbon({ editor }: { editor: Editor }) {
             <div className="ribbon-rows">
               <div className="ribbon-row">
                 <Btn editor={editor} title="Liste à puces" active={s.bullet} onClick={(c) => c.toggleBulletList().run()}>
-                  ☰
+                  <Icon name="list" />
                 </Btn>
                 <Btn editor={editor} title="Liste numérotée" active={s.ordered} onClick={(c) => c.toggleOrderedList().run()}>
-                  1.
+                  <Icon name="list-ol" />
                 </Btn>
                 <Btn editor={editor} title="Diminuer le retrait" onClick={(c) => c.liftListItem('listItem').run()}>
-                  ⇤
+                  <Icon name="outdent" />
                 </Btn>
                 <Btn editor={editor} title="Augmenter le retrait" onClick={(c) => c.sinkListItem('listItem').run()}>
-                  ⇥
+                  <Icon name="indent" />
                 </Btn>
                 <Btn editor={editor} title="Citation" active={s.quote} onClick={(c) => c.toggleBlockquote().run()}>
-                  ❝
+                  <Icon name="quote" />
                 </Btn>
               </div>
               <div className="ribbon-row">
                 <Btn editor={editor} title="Aligner à gauche" active={s.left} onClick={(c) => c.setAlignment('left').run()}>
-                  <span className="al al-l" />
+                  <Icon name="align-left" />
                 </Btn>
                 <Btn editor={editor} title="Centrer" active={s.center} onClick={(c) => c.setAlignment('center').run()}>
-                  <span className="al al-c" />
+                  <Icon name="align-center" />
                 </Btn>
                 <Btn editor={editor} title="Aligner à droite" active={s.right} onClick={(c) => c.setAlignment('right').run()}>
-                  <span className="al al-r" />
+                  <Icon name="align-right" />
                 </Btn>
                 <Btn editor={editor} title="Justifier" active={s.justify} onClick={(c) => c.setAlignment('justify').run()}>
-                  <span className="al al-j" />
+                  <Icon name="align-justify" />
                 </Btn>
               </div>
             </div>
@@ -398,7 +399,7 @@ function Ribbon({ editor }: { editor: Editor }) {
         <div className="ribbon-body">
           <Group label="Illustrations">
             <button type="button" className="rb-large" onClick={() => setDialog('image')}>
-              <span aria-hidden="true">▣</span>
+              <Icon name="image" size={20} />
               Image
             </button>
           </Group>
@@ -409,13 +410,13 @@ function Ribbon({ editor }: { editor: Editor }) {
               className="rb-large"
               onClick={(c) => c.insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
             >
-              <span aria-hidden="true">▦</span>
+              <Icon name="table" size={20} />
               Tableau
             </Btn>
           </Group>
           <Group label="Liens">
             <button type="button" className={`rb-large ${s.link ? 'rb-on' : ''}`} onClick={() => setDialog('link')}>
-              <span aria-hidden="true">⛓</span>
+              <Icon name="link" size={20} />
               Lien
             </button>
           </Group>
@@ -434,16 +435,16 @@ function Ribbon({ editor }: { editor: Editor }) {
           </Group>
           <Group label="Divers">
             <Btn editor={editor} title="Bloc à copier (commande, adresse)" active={s.codeBlock} onClick={(c) => c.toggleCodeBlock().run()}>
-              {'{ }'}
+              <Icon name="code" />
             </Btn>
             <Btn editor={editor} title="Code dans le texte" active={s.code} onClick={(c) => c.toggleCode().run()}>
-              {'</>'}
+              <Icon name="note" />
             </Btn>
             <Btn editor={editor} title="Séparateur" onClick={(c) => c.setHorizontalRule().run()}>
-              ―
+              <Icon name="minus" />
             </Btn>
             <Btn editor={editor} title="Saut de ligne (Maj+Entrée)" onClick={(c) => c.setHardBreak().run()}>
-              ↵
+              <Icon name="return" />
             </Btn>
           </Group>
         </div>
@@ -453,29 +454,29 @@ function Ribbon({ editor }: { editor: Editor }) {
         <div className="ribbon-body">
           <Group label="Lignes">
             <Btn editor={editor} title="Ligne au-dessus" onClick={(c) => c.addRowBefore().run()}>
-              +↑
+              Au-dessus
             </Btn>
             <Btn editor={editor} title="Ligne en dessous" onClick={(c) => c.addRowAfter().run()}>
-              +↓
+              En dessous
             </Btn>
             <Btn editor={editor} title="Supprimer la ligne" onClick={(c) => c.deleteRow().run()}>
-              −
+              <Icon name="trash" size={16} />
             </Btn>
           </Group>
           <Group label="Colonnes">
             <Btn editor={editor} title="Colonne à gauche" onClick={(c) => c.addColumnBefore().run()}>
-              +←
+              À gauche
             </Btn>
             <Btn editor={editor} title="Colonne à droite" onClick={(c) => c.addColumnAfter().run()}>
-              +→
+              À droite
             </Btn>
             <Btn editor={editor} title="Supprimer la colonne" onClick={(c) => c.deleteColumn().run()}>
-              −
+              <Icon name="trash" size={16} />
             </Btn>
           </Group>
           <Group label="Cellules">
             <Btn editor={editor} title="Fusionner ou scinder" onClick={(c) => c.mergeOrSplit().run()}>
-              ⊞
+              Fusionner
             </Btn>
             <Btn editor={editor} title="Cellule d’en-tête" onClick={(c) => c.toggleHeaderCell().run()}>
               En-tête

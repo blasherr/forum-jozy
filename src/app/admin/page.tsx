@@ -1,5 +1,6 @@
 import { and, count, desc, eq, gt } from 'drizzle-orm';
 import Link from 'next/link';
+import { Icon, type IconName } from '@/components/admin/Icon';
 import { db } from '@/db/client';
 import { auditLog, entries, media } from '@/db/schema';
 import { env } from '@/env';
@@ -22,36 +23,57 @@ export default async function Dashboard() {
           .from(auditLog)
           .where(and(eq(auditLog.action, 'auth.failed'), gt(auditLog.at, since)))
       : [],
-    canAudit ? db.select().from(auditLog).orderBy(desc(auditLog.at)).limit(8) : [],
+    canAudit ? db.select().from(auditLog).orderBy(desc(auditLog.at)).limit(7) : [],
   ]);
   const n = (key: string) => counts.find((c) => c.collection === key)?.n ?? 0;
 
-  const tiles = [
-    { label: 'Chapitres du règlement', value: n('rules'), href: '/admin/contenu/reglement' },
-    { label: 'Tutoriels', value: n('guide'), href: '/admin/contenu/guide' },
-    { label: 'Patch-notes', value: n('patchnotes'), href: '/admin/contenu/patch-notes' },
-    { label: 'Images', value: mediaCount[0]?.n ?? 0, href: '/admin/medias' },
+  const tiles: { label: string; value: number; href: string; icon: IconName }[] = [
+    { label: 'Chapitres du règlement', value: n('rules'), href: '/admin/contenu/reglement', icon: 'scale' },
+    { label: 'Tutoriels du guide', value: n('guide'), href: '/admin/contenu/guide', icon: 'book' },
+    { label: 'Patch-notes publiés', value: n('patchnotes'), href: '/admin/contenu/patch-notes', icon: 'news' },
+    { label: 'Images', value: mediaCount[0]?.n ?? 0, href: '/admin/medias', icon: 'image' },
+  ];
+
+  const actions: { label: string; text: string; href: string; icon: IconName }[] = [
+    { label: 'Écrire un patch-note', text: 'Publier les nouveautés du serveur', href: '/admin/contenu/patch-notes/nouveau', icon: 'news' },
+    { label: 'Modifier l’accueil', text: 'Bandeau, présentation, vote', href: '/admin/accueil', icon: 'layout' },
+    { label: 'Modifier le règlement', text: 'Chapitres et articles', href: '/admin/contenu/reglement', icon: 'scale' },
+    { label: 'Liens Discord', text: 'Boutons et invitations', href: '/admin/discord', icon: 'chat' },
   ];
 
   return (
     <div className="page">
-      <header className="page-head">
-        <h1>Bonjour {user.name}</h1>
-        <p>Tout ce qui est visible sur le site se modifie depuis ce panel.</p>
+      <header className="page-head page-head-row">
+        <div>
+          <h1>Bonjour {user.name}</h1>
+          <p>Voici l’état de votre site aujourd’hui.</p>
+        </div>
+        <Link className="a-btn a-btn-primary" href="/admin/contenu/patch-notes/nouveau">
+          <Icon name="plus" size={16} />
+          Nouveau patch-note
+        </Link>
       </header>
 
       {!user.totpEnabled ? (
-        <p className="alert">
-          La double authentification n’est pas activée sur votre compte.{' '}
-          <Link href="/admin/compte">Activez-la maintenant</Link> : un mot de passe seul ne suffit pas à protéger le site.
-        </p>
+        <div className="alert">
+          <Icon name="alert" />
+          <div>
+            <strong>Double authentification désactivée</strong>
+            <p>Un mot de passe seul ne suffit pas à protéger le site.</p>
+          </div>
+          <Link href="/admin/compte" className="a-btn">
+            Activer
+          </Link>
+        </div>
       ) : null}
-      {!env.isProd ? <p className="alert alert-soft">Mode développement : ne pas utiliser ces réglages en ligne.</p> : null}
 
       <ul className="tiles">
         {tiles.map((tile) => (
           <li key={tile.href}>
             <Link href={tile.href} className="tile">
+              <span className="tile-icon">
+                <Icon name={tile.icon} size={20} />
+              </span>
               <strong>{tile.value}</strong>
               <span>{tile.label}</span>
             </Link>
@@ -59,50 +81,84 @@ export default async function Dashboard() {
         ))}
       </ul>
 
-      <div className="grid-2">
-        <section className="panel">
-          <h2>Publier rapidement</h2>
-          <div className="stack">
-            <Link className="a-btn a-btn-primary" href="/admin/contenu/patch-notes/nouveau">
-              Rédiger un patch-note
-            </Link>
-            <Link className="a-btn" href="/admin/accueil">
-              Modifier la page d’accueil
-            </Link>
-            <Link className="a-btn" href="/admin/contenu/reglement">
-              Modifier le règlement
-            </Link>
-          </div>
-        </section>
-        {canAudit ? (
+      <div className="grid-main">
+        <div>
           <section className="panel">
-            <h2>Dernières 24 heures</h2>
-            <p className="big-number">{failed[0]?.n ?? 0}</p>
-            <p className="hint">tentative(s) de connexion refusée(s)</p>
-          </section>
-        ) : null}
-      </div>
-
-      {canAudit ? (
-        <section className="panel">
-          <h2>Activité récente</h2>
-          {recent.length === 0 ? (
-            <p className="hint">Rien pour l’instant.</p>
-          ) : (
-            <table className="a-table">
-            <tbody>
-              {recent.map((row) => (
-                <tr key={row.id}>
-                  <td>{formatDateTime(row.at)}</td>
-                  <td>{AUDIT_LABELS[row.action] ?? row.action}</td>
-                  <td>{row.userEmail ?? '—'}</td>
-                </tr>
+            <h2>Actions rapides</h2>
+            <ul className="quick">
+              {actions.map((a) => (
+                <li key={a.href}>
+                  <Link href={a.href}>
+                    <span className="tile-icon">
+                      <Icon name={a.icon} size={18} />
+                    </span>
+                    <span>
+                      <strong>{a.label}</strong>
+                      <small>{a.text}</small>
+                    </span>
+                  </Link>
+                </li>
               ))}
-            </tbody>
-            </table>
-          )}
-        </section>
-      ) : null}
+            </ul>
+          </section>
+
+          {canAudit ? (
+            <section className="panel">
+              <div className="panel-head">
+                <h2>Activité récente</h2>
+                <Link className="a-link" href="/admin/journal">
+                  Tout voir
+                </Link>
+              </div>
+              {recent.length === 0 ? (
+                <p className="hint">Rien pour l’instant.</p>
+              ) : (
+                <ul className="feed">
+                  {recent.map((row) => (
+                    <li key={row.id}>
+                      <span>{AUDIT_LABELS[row.action] ?? row.action}</span>
+                      <small>
+                        {row.userEmail ?? 'Inconnu'} · {formatDateTime(row.at)}
+                      </small>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ) : null}
+        </div>
+
+        <aside>
+          <section className="panel">
+            <h2>Sécurité</h2>
+            <ul className="checks">
+              <li className={user.totpEnabled ? 'ok' : 'warn'}>
+                <Icon name={user.totpEnabled ? 'shield-check' : 'shield'} />
+                <span>
+                  <strong>Double authentification</strong>
+                  <small>{user.totpEnabled ? 'Activée' : 'À activer'}</small>
+                </span>
+              </li>
+              {canAudit ? (
+                <li className={(failed[0]?.n ?? 0) > 20 ? 'warn' : 'ok'}>
+                  <Icon name="clock" />
+                  <span>
+                    <strong>{failed[0]?.n ?? 0} connexion(s) refusée(s)</strong>
+                    <small>Dernières 24 heures</small>
+                  </span>
+                </li>
+              ) : null}
+              <li className={env.isProd ? 'ok' : 'warn'}>
+                <Icon name="eye" />
+                <span>
+                  <strong>{env.isProd ? 'Production' : 'Mode développement'}</strong>
+                  <small>{env.isProd ? 'Site en ligne' : 'Version locale, pas en ligne'}</small>
+                </span>
+              </li>
+            </ul>
+          </section>
+        </aside>
+      </div>
     </div>
   );
 }

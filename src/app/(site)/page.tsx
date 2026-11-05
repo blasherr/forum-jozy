@@ -45,8 +45,10 @@ function Hero({ hero, site, dust }: { hero: Home['hero']; site: SiteSettings; du
       <div className="hero-copy">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="hero-mark" src="/brand/nf-mark.webp" alt="" width={974} height={737} />
-        {hero.kicker ? <p className="hero-kicker">{hero.kicker}</p> : null}
-        <h1 id="hero-title">{hero.title}</h1>
+        <div className="hero-title">
+          {hero.kicker ? <p className="hero-kicker">{hero.kicker}</p> : null}
+          <h1 id="hero-title">{hero.title}</h1>
+        </div>
         <Ornament />
         {hero.subtitle ? <p className="hero-sub">{hero.subtitle}</p> : null}
         <div className="hero-actions">

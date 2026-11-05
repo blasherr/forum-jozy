@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from 'react';
 import { useAdmin } from './context';
+import { Icon } from './Icon';
 import { MediaPicker } from './MediaPicker';
 
 export function TextField({
@@ -167,13 +168,13 @@ export function MediaListField({
             ) : null}
             <span className="repeat-tools">
               <button type="button" aria-label="Monter" disabled={i === 0} onClick={() => move(i, -1)}>
-                ▲
+                <Icon name="up" size={16} />
               </button>
               <button type="button" aria-label="Descendre" disabled={i === items.length - 1} onClick={() => move(i, 1)}>
-                ▼
+                <Icon name="down" size={16} />
               </button>
               <button type="button" aria-label="Retirer" onClick={() => onChange(items.filter((_, j) => j !== i))}>
-                ✕
+                <Icon name="x" size={16} />
               </button>
             </span>
           </li>
@@ -233,10 +234,10 @@ export function Repeater<T>({
             <span>{title(item, i) || `Élément ${i + 1}`}</span>
             <span className="repeat-tools">
               <button type="button" aria-label="Monter" disabled={i === 0} onClick={(e) => { e.preventDefault(); move(i, -1); }}>
-                ▲
+                <Icon name="up" size={16} />
               </button>
               <button type="button" aria-label="Descendre" disabled={i === items.length - 1} onClick={(e) => { e.preventDefault(); move(i, 1); }}>
-                ▼
+                <Icon name="down" size={16} />
               </button>
               <button
                 type="button"
@@ -246,7 +247,7 @@ export function Repeater<T>({
                   onChange(items.filter((_, j) => j !== i));
                 }}
               >
-                ✕
+                <Icon name="x" size={16} />
               </button>
             </span>
           </summary>

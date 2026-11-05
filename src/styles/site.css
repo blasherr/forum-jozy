@@ -687,6 +687,16 @@ main {
   animation: rise 1.05s var(--ease-out) backwards;
 }
 
+.hero-title {
+  display: contents;
+}
+
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
 .hero-mark {
   width: auto;
   height: clamp(74px, 11vh, 118px);
@@ -2161,6 +2171,13 @@ main {
   background: var(--blood);
   font-size: 1rem;
   line-height: 1.4;
+}
+
+.preview-banner {
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: #fff4df;
+  background: var(--blood);
 }
 
 /* ================== Écran de chargement ================== */

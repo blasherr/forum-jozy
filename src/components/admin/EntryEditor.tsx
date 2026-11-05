@@ -8,6 +8,7 @@ import type { CollectionInfo } from '@/lib/content/labels';
 import type { RichDoc } from '@/lib/richtext/types';
 import { slugify } from '@/lib/richtext/validate';
 import { useAdmin } from './context';
+import { Icon } from './Icon';
 
 const WordEditor = dynamic(() => import('./WordEditor').then((m) => m.WordEditor), {
   ssr: false,
@@ -197,6 +198,7 @@ export function EntryEditor({
             {draft.id ? (
               <>
                 <a className="a-btn" href={`/apercu/${draft.id}`} target="_blank" rel="noopener">
+                  <Icon name="eye" size={16} />
                   Aperçu
                 </a>
                 {draft.status === 'published' ? (
@@ -299,6 +301,7 @@ export function EntryEditor({
         {draft.id && role !== 'editor' ? (
           <section className="panel">
             <button type="button" className="a-btn a-btn-danger" onClick={remove}>
+              <Icon name="trash" size={16} />
               Supprimer
             </button>
           </section>

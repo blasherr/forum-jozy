@@ -2,6 +2,7 @@
 
 import { useRef, useState, type ChangeEvent } from 'react';
 import { useAdmin } from './context';
+import { Icon } from './Icon';
 import { PageHead } from './forms';
 import { useUpload, type MediaItem } from './MediaPicker';
 
@@ -49,6 +50,7 @@ export function MediaLibrary({ initial }: { initial: MediaItem[] }) {
       />
       <p>
         <button type="button" className="a-btn a-btn-primary" disabled={busy} onClick={() => input.current?.click()}>
+          <Icon name="upload" size={16} />
           {busy ? 'Envoi en cours…' : 'Envoyer des images'}
         </button>
         <input ref={input} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={onFiles} />

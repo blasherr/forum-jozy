@@ -1,3 +1,5 @@
+import { DEFAULT_SETTINGS } from '@/lib/content/defaults';
+import { themeSchema } from '@/lib/content/schemas';
 import { randomBytes } from 'node:crypto';
 import { beforeAll, describe, expect, it } from 'vitest';
 
@@ -128,5 +130,21 @@ describe('Recherche', () => {
     expect(searchEntries([entry], '(a+)+$')).toEqual([]);
     expect(searchEntries([entry], "' OR 1=1 --")).toEqual([]);
     expect(searchEntries([entry], 'mort rp')).toHaveLength(1);
+  });
+});
+
+describe('designs du site', () => {
+  const theme = DEFAULT_SETTINGS.theme;
+
+  it('ne connaît que la liste fermée des designs', () => {
+    expect(themeSchema.safeParse({ ...theme, design: 'cendre' }).success).toBe(true);
+    for (const design of ['evil', '"><script>', '../admin', '']) {
+      expect(themeSchema.safeParse({ ...theme, design }).success).toBe(false);
+    }
+  });
+
+  it('garde les réglages enregistrés avant l’arrivée des designs', () => {
+    const { design: _design, ...before } = theme;
+    expect(themeSchema.parse(before).design).toBe('bureau');
   });
 });

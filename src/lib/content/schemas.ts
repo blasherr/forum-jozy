@@ -1,4 +1,7 @@
 import { z } from 'zod';
+
+// Zod teste new Function() au démarrage : la CSP le bloque et remonte une violation à chaque page du panel.
+z.config({ jitless: true });
 import type { RichDoc } from '@/lib/richtext/types';
 import { safeHref } from '@/lib/richtext/url';
 import { RichTextError, sanitizeDoc } from '@/lib/richtext/validate';
@@ -207,8 +210,13 @@ export const FONT_OPTIONS = {
   body: ['fell', 'caslon', 'oldstandard', 'garamond'],
 } as const;
 
+/** Liste fermée : la valeur finit dans un attribut HTML et sélectionne une feuille de style. */
+export const DESIGNS = ['bureau', 'saloon', 'wanted', 'carnet', 'cendre', 'gazette', 'cinema'] as const;
+export type Design = (typeof DESIGNS)[number];
+
 export const themeSchema = z
   .object({
+    design: z.enum(DESIGNS).default('bureau'),
     colors: z
       .object({
         blood: hex,

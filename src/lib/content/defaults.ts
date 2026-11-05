@@ -276,6 +276,7 @@ export const DEFAULT_SETTINGS: SettingsMap = {
     ],
   },
   theme: {
+    design: 'bureau',
     colors: {
       blood: '#8e1a14',
       gold: '#c79a3b',

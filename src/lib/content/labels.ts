@@ -1,4 +1,5 @@
 import type { Collection } from '@/db/schema';
+import type { Design } from './schemas';
 
 export interface CollectionInfo {
   key: Collection;
@@ -55,4 +56,14 @@ export const AUDIT_LABELS: Record<string, string> = {
   'user.update': 'Compte modifié',
   'user.delete': 'Compte supprimé',
   'backup.export': 'Sauvegarde exportée',
+};
+
+export const DESIGN_INFO: Record<Design, { name: string; text: string }> = {
+  bureau: { name: 'Bureau 1847', text: 'Papier ancien, bois sombre et plaques rivetées : le bureau d’un shérif à la lampe à huile.' },
+  saloon: { name: 'Le Saloon', text: 'Bois sombre, laque noire, laiton et dorure à la feuille, à la lueur des lampes à huile.' },
+  wanted: { name: 'Avis de recherche', text: 'Affiches clouées sur des planches de grange, planches brutes en guise de boutons.' },
+  carnet: { name: 'Carnet de route', text: 'Cuir cousu, pages écrites à la plume et photos collées, comme un carnet de voyage.' },
+  cendre: { name: 'Sang & Cendre', text: 'Noir, blanc et le rouge du logo. Grands titres massifs et coups de pinceau.' },
+  gazette: { name: 'La Gazette', text: 'Un vrai journal de 1847 : papier clair, encre noire, colonnes et photos en noir et blanc.' },
+  cinema: { name: 'Cinéma', text: 'La photographie d’abord : panneaux sombres, filets dorés, ambiance générique de film.' },
 };

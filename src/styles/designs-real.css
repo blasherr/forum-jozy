@@ -1,0 +1,1685 @@
+/* ==========================================================================
+   Trois designs Red Dead en matières réelles : photos de bois, de cuir, de papier et de métal
+   (Poly Haven, ambientCG, CC0), rendues avec une vraie lumière dans Blender (scripts/art/real_*.py).
+
+   Une feuille de n'importe quelle hauteur : le pourtour vient de border-image (sans « fill »)
+   et le corps d'une image répétable. Le bord de l'image s'efface en douceur par-dessus le corps :
+   aucun raccord, et la matière n'est jamais étirée.
+   ========================================================================== */
+
+/* ================== Socle des trois designs ================== */
+.site:is([data-design='saloon'], [data-design='wanted'], [data-design='carnet']) {
+  --plate-brass: url(/textures/real/brass.webp);
+  --plate-iron: url(/textures/real/iron.webp);
+
+  .seal[src$='seal-red.webp'] { content: url(/textures/real/seal-red.webp); }
+  .seal[src$='seal-black.webp'] { content: url(/textures/real/seal-black.webp); }
+  .seal[src$='seal-gold.webp'] { content: url(/textures/real/seal-gold.webp); }
+  .seal[src$='seal-green.webp'] { content: url(/textures/real/seal-green.webp); }
+  .seal[src$='seal-blue.webp'] { content: url(/textures/real/seal-blue.webp); }
+
+  .pillar-seal,
+  .letter-seal,
+  .login-seal,
+  .poster-seal {
+    display: block;
+  }
+
+  /* Discord : sans le rabat d'enveloppe, le cachet coiffe la carte au lieu de couvrir le titre */
+  .letter {
+    margin-top: 34px;
+  }
+
+  .letter-seal {
+    top: -46px;
+  }
+
+  .letter-body {
+    padding-top: 3.6rem;
+  }
+
+  /* Boutons : de vrais objets, tendus sans déformer vis et coins */
+  .btn {
+    min-height: 54px;
+    padding: 0.6em 2.1em;
+    border: 1px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    font-size: 0.98rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    transition: transform 0.16s var(--ease-out), filter 0.16s ease;
+  }
+
+  .btn:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+  }
+
+  .btn:active {
+    filter: brightness(0.92);
+    transform: translateY(1px);
+  }
+
+  .btn-huge {
+    min-height: 66px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-brass {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .btn-brass:hover {
+    background: transparent;
+  }
+
+  /* Les bandeaux de page gardent une lecture simple */
+  .page-header-sub {
+    font-style: normal;
+  }
+}
+
+/* ================== 4. Le Saloon : bois sombre, laque noire, laiton et dorure ================== */
+.site[data-design='saloon'] {
+  --bg: #120a06;
+  --night: #120a06;
+  --bone: #f3e8cf;
+  --bone-dim: #cfbd9a;
+  --ink: #f1e7d1;
+  --blood: #d5a84f;
+  --gold: #d5a84f;
+  --card: #140d09;
+  --line: rgba(216, 170, 90, 0.3);
+  --muted: #cdbc9c;
+  --hover: rgba(216, 170, 90, 0.12);
+  --field: rgba(0, 0, 0, 0.42);
+  --focus: rgba(216, 170, 90, 0.28);
+  --accent: #d5a84f;
+  --accent-hover: #ecc777;
+  --accent-ink: #20140a;
+  --accent-text: #e9c67e;
+  --bar: #120a06;
+  --bar-ink: #f3e8cf;
+  --foot: #0b0604;
+  --f-display: var(--font-sancreek), Georgia, serif;
+  --f-heading: var(--font-playfair), Georgia, serif;
+  --f-body: var(--font-caslon), Georgia, serif;
+  --f-label: var(--font-playfair), Georgia, serif;
+  --gilded: linear-gradient(180deg, rgba(255, 233, 170, 0.5), rgba(255, 214, 130, 0.1) 46%, rgba(120, 70, 12, 0.34) 56%, rgba(255, 226, 150, 0.32)), url(/textures/real/brass.webp);
+
+  background: #120a06 url(/textures/real/wall-saloon.webp) 0 0 / 1100px;
+
+  /* La lampe tombe du plafond : le bois reste visible en haut, et plonge dans le noir ailleurs */
+  &::before {
+    display: block;
+    background:
+      radial-gradient(90% 62% at 50% 16%, rgba(255, 186, 104, 0.14), rgba(10, 5, 2, 0.5) 56%, rgba(6, 3, 1, 0.8) 100%),
+      linear-gradient(rgba(14, 8, 4, 0.42), rgba(14, 8, 4, 0.42));
+  }
+
+  .paper {
+    border: 14px solid transparent;
+    border-image: url(/textures/real/card-lacquer.webp) 150 / 100px / 30px round;
+    background: #14100c url(/textures/real/tile-lacquer.webp) 0 0 / 620px;
+    background-clip: padding-box;
+    color: var(--ink);
+  }
+
+  .paper-thin {
+    border-width: 9px;
+    border-image-width: 64px;
+    border-image-outset: 19px;
+  }
+
+  /* Boutons */
+  .btn-primary,
+  .btn-brass {
+    border-image: var(--plate-brass) 66 90 fill / 24px 32px / 6px stretch;
+    color: #170d03;
+    text-shadow: 0 1px 0 rgba(255, 232, 175, 0.7);
+  }
+
+  .btn-primary:hover,
+  .btn-brass:hover {
+    color: #170d03;
+  }
+
+  .btn-secondary,
+  .btn-secondary:hover {
+    border-image: var(--plate-iron) 66 90 fill / 24px 32px / 6px stretch;
+    color: #f4ead6;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 0.9);
+  }
+
+  .copy,
+  .back {
+    border: 1px solid transparent;
+    border-image: var(--plate-brass) 66 90 fill / 13px 16px / 3px stretch;
+    color: #170d03;
+    font-weight: 800;
+    text-shadow: 0 1px 0 rgba(255, 232, 175, 0.7);
+  }
+
+  .copy:hover,
+  .back:hover {
+    color: #170d03;
+    background: transparent;
+    border-color: transparent;
+    filter: brightness(1.12);
+  }
+
+  /* Barres */
+  .topbar {
+    background:
+      linear-gradient(rgba(14, 8, 4, 0.56), rgba(10, 5, 2, 0.76)),
+      #150d07 url(/textures/real/beam-saloon.webp) center / 1600px 100%;
+    box-shadow: inset 0 -1px 0 rgba(216, 170, 90, 0.45), 0 8px 20px rgba(0, 0, 0, 0.6);
+    border-bottom: 0;
+  }
+
+  .brand {
+    font-family: var(--f-display);
+    font-size: 1.4rem;
+    text-shadow: 0 2px 2px #000;
+  }
+
+  .nav-desktop a,
+  .nav-mobile summary {
+    font-size: 0.9rem;
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .nav-desktop a[aria-current='page'] {
+    color: #f4d48f;
+  }
+
+  .nav-desktop li:last-child a {
+    border: 1px solid transparent;
+    border-image: var(--plate-brass) 66 90 fill / 14px 18px / 3px stretch;
+    color: #170d03;
+    background: transparent;
+    text-shadow: 0 1px 0 rgba(255, 232, 175, 0.7);
+  }
+
+  .nav-desktop li:last-child a:hover {
+    background: transparent;
+    filter: brightness(1.12);
+  }
+
+  .backbar {
+    background: #0f0805;
+    border-bottom: 1px solid rgba(216, 170, 90, 0.26);
+  }
+
+  /* Accueil : la vidéo, et l'enseigne vissée devant */
+  .hero {
+    background: #070403;
+  }
+
+  .hero-stage-video + .hero-shade,
+  .hero-shade {
+    background:
+      radial-gradient(58% 44% at 50% 62%, rgba(6, 3, 1, 0.5), rgba(6, 3, 1, 0) 100%),
+      linear-gradient(180deg, rgba(6, 3, 1, 0.3) 0%, rgba(6, 3, 1, 0) 24%, rgba(6, 3, 1, 0.18) 60%, var(--bg) 100%);
+  }
+
+  .hero-copy {
+    justify-content: flex-end;
+    padding: 2rem 0 1.4rem;
+  }
+
+  .hero-mark {
+    display: none;
+  }
+
+  .hero-title {
+    display: block;
+    width: min(800px, 100%);
+    padding: clamp(1.8rem, 4vw, 3rem) clamp(1.6rem, 5vw, 4.4rem);
+    background: url(/textures/real/signboard.webp) center / 100% 100% no-repeat;
+  }
+
+  .hero-kicker {
+    font-size: clamp(0.72rem, 1.3vw, 0.92rem);
+    color: #eccd8f;
+    text-shadow: 0 1px 0 #000, 0 0 6px #000;
+  }
+
+  .hero h1 {
+    margin-top: 0.3rem;
+    padding-bottom: 0.08em;
+    font-size: clamp(2.5rem, 7vw, 5.6rem);
+    color: transparent;
+    background: var(--gilded) center / 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.9)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+  }
+
+  .hero .ornament {
+    display: none;
+  }
+
+  .hero-sub {
+    font-style: normal;
+    color: #fff4dc;
+  }
+
+  /* Titres de section : dorure à la feuille sur le bois sombre */
+  .section-title h2,
+  .broadside-head h2,
+  .ledger-head h2,
+  .sheet-head h2,
+  .poster h2,
+  .page-header h1,
+  .lost h1 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    line-height: 1.12;
+    color: transparent;
+    background: var(--gilded) center / 100% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.9));
+  }
+
+  .ornament {
+    color: #d5a84f;
+  }
+
+  .pillar {
+    padding-top: 3.1rem;
+  }
+
+  .pillar h3,
+  .chronicle-list h3,
+  .steps h3,
+  .clipping h3,
+  .letter-body h2,
+  .board-title,
+  .chapter-title,
+  .topic-title {
+    color: #f6e6c4;
+  }
+
+  .board-num,
+  .chapter-num,
+  .step-num {
+    color: #e0b862;
+  }
+
+  .board-row:hover .board-num {
+    transform: none;
+  }
+
+  .print {
+    padding: 0.2rem;
+  }
+
+  .print img {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
+  }
+
+  .print figcaption {
+    color: #e8dcc2;
+  }
+
+  .chronicle {
+    background: rgba(7, 4, 2, 0.62);
+    box-shadow: inset 0 1px 0 rgba(216, 170, 90, 0.3), inset 0 -1px 0 rgba(216, 170, 90, 0.3);
+  }
+
+  .chronicle::before {
+    background: rgba(9, 5, 2, 0.84);
+  }
+
+  .chronicle-list li {
+    border-top: 1px solid rgba(216, 170, 90, 0.6);
+  }
+
+  .chronicle-year {
+    color: #e6be69;
+  }
+
+  .vote {
+    background: none;
+    box-shadow: none;
+  }
+
+  .poster {
+    width: min(680px, 100%);
+  }
+
+  .poster-kicker {
+    font-family: var(--f-heading);
+    font-size: clamp(1rem, 2.6vw, 1.3rem);
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #eccd8f;
+  }
+
+  .poster h2 {
+    border-block: 1px solid transparent;
+    padding: 0.2rem 0 0.3rem;
+    font-size: clamp(2.4rem, 8vw, 4.3rem);
+  }
+
+  .poster-art {
+    border: 1px solid rgba(216, 170, 90, 0.5);
+  }
+
+  .poster-note {
+    color: var(--muted);
+  }
+
+  .page-header::before {
+    background: linear-gradient(180deg, rgba(7, 4, 2, 0.5), rgba(7, 4, 2, 0.62) 60%, rgba(10, 5, 3, 0.96) 100%);
+  }
+
+  .page-header-sub {
+    color: #fff4dc;
+    text-shadow: 0 1px 4px #000;
+  }
+
+  .spine {
+    background: #14100c url(/textures/real/tile-lacquer.webp) 0 0 / 620px;
+    box-shadow: inset 0 0 0 1px rgba(216, 170, 90, 0.4), 0 8px 18px rgba(0, 0, 0, 0.5);
+  }
+
+  .loader-img {
+    opacity: 0.7;
+  }
+
+  .loader-label {
+    color: #eccd8f;
+  }
+}
+
+/* ================== 5. Avis de recherche : planches de grange et affiches clouées ================== */
+.site[data-design='wanted'] {
+  --bg: #17110c;
+  --night: #17110c;
+  --bone: #f1e5ca;
+  --bone-dim: #d3c5a7;
+  --ink: #1f150b;
+  --blood: #7d1410;
+  --gold: #7d1410;
+  --card: transparent;
+  --line: rgba(45, 28, 12, 0.4);
+  --muted: #47351f;
+  --hover: rgba(125, 20, 16, 0.1);
+  --field: rgba(255, 248, 230, 0.62);
+  --focus: rgba(125, 20, 16, 0.24);
+  --accent: #7d1410;
+  --accent-hover: #9a1c16;
+  --accent-ink: #f8edd5;
+  --accent-text: #7d1410;
+  --bar: #17110c;
+  --bar-ink: #f1e5ca;
+  --foot: #100b07;
+  --f-display: var(--font-holtwood), Georgia, serif;
+  --f-heading: var(--font-rye), Georgia, serif;
+  --f-body: var(--font-caslon), Georgia, serif;
+  --f-label: var(--font-playfair), Georgia, serif;
+  --sheet: url(/textures/real/sheet-aged.webp);
+  --tile: url(/textures/real/tile-aged.webp);
+
+  background: #17110c url(/textures/real/wall-barn.webp) 0 0 / 1000px;
+
+  &::before {
+    display: block;
+    background: radial-gradient(100% 80% at 50% 30%, rgba(30, 20, 10, 0.08), rgba(14, 9, 5, 0.46) 70%, rgba(8, 5, 3, 0.72) 100%);
+  }
+
+  .paper,
+  .section-title,
+  .hero {
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 100px / 35px round;
+    background: linear-gradient(rgba(238, 222, 186, 0.42), rgba(238, 222, 186, 0.42)), #c9b386 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+    color: var(--ink);
+  }
+
+  .paper-thin {
+    border-width: 10px;
+    border-image-width: 64px;
+    border-image-outset: 22px;
+  }
+
+  /* Deux clous forgés en haut de chaque affiche */
+  .paper::before,
+  .paper::after,
+  .section-title::before,
+  .section-title::after,
+  .hero::before,
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    z-index: 3;
+    width: 24px;
+    height: 24px;
+    background: url(/textures/real/nail.webp) center / contain no-repeat;
+    pointer-events: none;
+  }
+
+  .paper::before,
+  .section-title::before,
+  .hero::before {
+    left: 6px;
+  }
+
+  .paper::after,
+  .section-title::after,
+  .hero::after {
+    right: 6px;
+  }
+
+  .hero-ticket::before,
+  .hero-ticket::after {
+    display: none;
+  }
+
+  .ornament {
+    color: var(--ink);
+  }
+
+  /* Boutons : planches brutes, lettres brûlées ou peintes */
+  .btn-primary,
+  .btn-primary:hover {
+    border-image: url(/textures/real/tag-red.webp) 60 80 fill / 24px 32px / 7px stretch;
+    color: #fff3da;
+    text-shadow: 0 1px 2px #000, 0 0 8px rgba(0, 0, 0, 0.7);
+  }
+
+  .btn-secondary,
+  .btn-secondary:hover {
+    border-image: url(/textures/real/tag-dark.webp) 60 80 fill / 24px 32px / 7px stretch;
+    color: #f4e8cf;
+    text-shadow: 0 1px 2px #000;
+  }
+
+  .btn-brass,
+  .btn-brass:hover {
+    border-image: url(/textures/real/tag-raw.webp) 60 80 fill / 24px 32px / 7px stretch;
+    color: #fff3da;
+    text-shadow: 0 1px 2px #000, 0 0 8px rgba(0, 0, 0, 0.7);
+  }
+
+  .copy,
+  .back {
+    border: 1px solid transparent;
+    border-image: url(/textures/real/tag-dark.webp) 60 80 fill / 12px 15px / 3px stretch;
+    color: #f4e8cf;
+    font-weight: 800;
+    text-shadow: 0 1px 2px #000;
+  }
+
+  .copy:hover,
+  .back:hover {
+    color: #f4e8cf;
+    background: transparent;
+    border-color: transparent;
+    filter: brightness(1.2);
+  }
+
+  /* Barres */
+  .topbar {
+    background:
+      linear-gradient(rgba(12, 8, 4, 0.5), rgba(12, 8, 4, 0.66)),
+      #1c140e url(/textures/real/beam-barn.webp) center / 1600px 100%;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid #000;
+  }
+
+  .brand {
+    font-family: var(--f-heading);
+    font-size: 1.3rem;
+    text-shadow: 0 2px 2px #000;
+  }
+
+  .nav-desktop a,
+  .nav-mobile summary {
+    font-size: 0.9rem;
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .nav-desktop a::after {
+    background: #e9d8b4;
+  }
+
+  .nav-desktop li:last-child a {
+    border: 1px solid transparent;
+    border-image: url(/textures/real/tag-red.webp) 60 80 fill / 13px 16px / 3px stretch;
+    color: #fff3da;
+    background: transparent;
+    text-shadow: 0 1px 2px #000;
+  }
+
+  .nav-desktop li:last-child a:hover {
+    background: transparent;
+    filter: brightness(1.15);
+  }
+
+  .backbar {
+    background: #120c08;
+    border-bottom: 1px solid #000;
+  }
+
+  /* Accueil : la grande affiche, et la scène imprimée dedans */
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(880px, 100% - 3.4rem);
+    min-height: 0;
+    margin: 3rem auto 1.4rem;
+    padding: 1.1rem clamp(1rem, 4vw, 2.6rem) 1.2rem;
+    overflow: visible;
+    isolation: auto;
+    rotate: -0.5deg;
+  }
+
+  .hero-shade,
+  .hero-fog,
+  .hero-fireflies,
+  .hero-lantern,
+  .hero-mark,
+  .hero .ornament {
+    display: none;
+  }
+
+  .hero-copy,
+  .hero-title {
+    display: contents;
+  }
+
+  .hero-kicker {
+    order: 1;
+    width: 100%;
+    padding-bottom: 0.3rem;
+    border-bottom: 3px double var(--ink);
+    font-size: clamp(0.76rem, 1.5vw, 0.96rem);
+    font-weight: 800;
+    letter-spacing: 0.32em;
+    text-align: center;
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .hero h1 {
+    order: 2;
+    width: 100%;
+    margin: 0.4rem 0 0.5rem;
+    font-size: clamp(1.9rem, 6vw, 4.5rem);
+    line-height: 1.04;
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #1a1108;
+    text-shadow: none;
+    filter: url(#nf-worn);
+  }
+
+  .hero-stage,
+  .hero-stage-video {
+    position: relative;
+    left: auto;
+    top: auto;
+    z-index: 0;
+    order: 3;
+    width: 100%;
+    overflow: hidden;
+    border: 3px solid #1a1108;
+    translate: none;
+    animation: none;
+    will-change: auto;
+    filter: sepia(0.72) brightness(2) contrast(0.9);
+    mix-blend-mode: multiply;
+  }
+
+  .hero-sub {
+    order: 4;
+    margin-top: 0.8rem;
+    font-size: clamp(1.1rem, 2vw, 1.34rem);
+    font-style: italic;
+    text-align: center;
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .hero-actions {
+    order: 5;
+    margin-top: 0.9rem;
+  }
+
+  .hero-ticket {
+    order: 6;
+    width: 100%;
+    margin: 0.9rem 0 0;
+    padding: 0.45rem 0.8rem;
+    border: 0;
+    border-block: 1px solid var(--ink);
+    border-image: none;
+    border-radius: 0;
+    background: none;
+    animation: none;
+  }
+
+  /* Titres : chaque rubrique est une bande de papier clouée au mur */
+  .section-title {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    padding: 0.5rem clamp(1.4rem, 4vw, 3rem) 0.6rem;
+    rotate: -0.4deg;
+  }
+
+  .section-title-light h2,
+  .section-title h2 {
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .section-title-light .ornament {
+    color: var(--ink);
+  }
+
+  .section-title h2,
+  .broadside-head h2,
+  .ledger-head h2,
+  .sheet-head h2,
+  .folio-head h1,
+  .masthead h1,
+  .masthead-name,
+  .dispatch h1,
+  .dispatch h2,
+  .poster-kicker {
+    font-family: var(--f-heading);
+    font-weight: 400;
+    filter: url(#nf-worn);
+  }
+
+  .broadside {
+    rotate: -0.25deg;
+  }
+
+  .ledger {
+    rotate: 0.2deg;
+  }
+
+  .sheet {
+    rotate: 0.15deg;
+  }
+
+  .pillar:nth-child(odd) {
+    rotate: -0.9deg;
+  }
+
+  .pillar:nth-child(even) {
+    rotate: 0.8deg;
+  }
+
+  .pillar {
+    padding-top: 3.2rem;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .pillar::before,
+  .pillar::after,
+  .letter::before,
+  .letter::after {
+    display: none;
+  }
+
+  .pillar:hover {
+    transform: translateY(-4px);
+  }
+
+  .pillar h3,
+  .chronicle-list h3,
+  .steps h3,
+  .clipping h3,
+  .letter-body h2,
+  .board-title,
+  .chapter-title,
+  .topic-title {
+    font-family: var(--f-heading);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .board-num,
+  .chapter-num,
+  .step-num {
+    font-family: var(--f-heading);
+    font-weight: 400;
+    color: var(--blood);
+  }
+
+  .prints li:nth-child(3n + 1) .print {
+    rotate: -1deg;
+  }
+
+  .prints li:nth-child(3n + 2) .print {
+    rotate: 0.8deg;
+  }
+
+  .prints li:nth-child(3n) .print {
+    rotate: -0.5deg;
+  }
+
+  .print {
+    padding: 0.4rem 0.4rem 0.2rem;
+  }
+
+  .print img {
+    box-shadow: 0 0 0 2px #1a1108;
+    filter: sepia(0.62) contrast(1.02) brightness(1.08);
+  }
+
+  /* Chronique : une longue affiche plutôt qu'un fond sombre */
+  .chronicle {
+    background: none;
+    box-shadow: none;
+  }
+
+  .chronicle::before,
+  .band-img {
+    display: none;
+  }
+
+  .chronicle-list {
+    gap: 1.6rem;
+  }
+
+  .chronicle-list li {
+    position: relative;
+    padding: 1.2rem 1.4rem 1rem;
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 64px / 22px round;
+    background: #c9b386 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+    color: var(--ink);
+  }
+
+  .chronicle-year {
+    font-family: var(--f-display);
+    font-size: 2.3rem;
+    font-weight: 400;
+    color: var(--blood);
+  }
+
+  .chronicle-list h3 {
+    color: var(--ink);
+  }
+
+  .chronicle-list p {
+    color: var(--ink);
+  }
+
+  .vote {
+    background: none;
+    box-shadow: none;
+  }
+
+  .poster {
+    width: min(680px, 100%);
+  }
+
+  .poster-body::before,
+  .poster-body::after {
+    display: none;
+  }
+
+  .poster-nail {
+    top: 4px;
+    z-index: 3;
+    display: block;
+    width: 26px;
+    height: 26px;
+    background: url(/textures/real/nail.webp) center / contain no-repeat;
+  }
+
+  .poster-kicker {
+    font-size: clamp(1.4rem, 4.6vw, 2rem);
+  }
+
+  .poster h2 {
+    border-block: 3px double var(--ink);
+    font-family: var(--f-display);
+    font-size: clamp(2.4rem, 8.6vw, 4.6rem);
+    text-transform: uppercase;
+    color: var(--blood);
+    filter: url(#nf-worn);
+  }
+
+  .poster-art {
+    border: 3px solid #1a1108;
+    filter: sepia(0.7) brightness(1.5) contrast(0.95);
+    mix-blend-mode: multiply;
+  }
+
+  .page-header {
+    background: none;
+  }
+
+  .page-header::before,
+  .page-header-img {
+    display: none;
+  }
+
+  .page-header-inner {
+    position: relative;
+    max-width: 52rem;
+    padding: 1rem clamp(1.4rem, 4vw, 3rem) 1.2rem;
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 100px / 35px round;
+    background: #c9b386 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+    color: var(--ink);
+  }
+
+  .page-header .kicker {
+    color: var(--blood);
+  }
+
+  .page-header .ornament {
+    color: var(--ink);
+  }
+
+  .page-header h1 {
+    font-family: var(--f-heading);
+    color: var(--ink);
+    text-shadow: none;
+    filter: url(#nf-worn);
+  }
+
+  .page-header-sub {
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .spine {
+    background: #c9b386 var(--tile) 0 0 / 620px;
+    box-shadow: 0 0 0 1px #1a1108, 0 8px 14px rgba(0, 0, 0, 0.55);
+  }
+
+  .topic-group h2 {
+    color: var(--bone);
+    text-shadow: 0 2px 4px #000;
+  }
+
+  .search label {
+    color: var(--bone);
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .search input {
+    border-color: #1a1108;
+    background: #e3d2ab;
+  }
+
+  .notice {
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 64px / 22px round;
+    background: #c9b386 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+    box-shadow: none;
+  }
+
+  .lost h1 {
+    color: var(--bone);
+    text-shadow: 0 2px 4px #000;
+  }
+
+  .lost .kicker {
+    color: var(--bone);
+  }
+
+  .loader-img {
+    filter: sepia(0.5);
+    opacity: 0.62;
+  }
+
+  .loader-label {
+    color: #f1e5ca;
+  }
+
+  .loader-tip {
+    color: #f8efdc;
+  }
+
+  .hero-ticket-label,
+  .address-paper dt {
+    color: var(--blood);
+  }
+}
+
+/* ================== 6. Carnet de route : cuir cousu et pages écrites à la main ================== */
+.site[data-design='carnet'] {
+  --bg: #1b0f08;
+  --night: #1b0f08;
+  --bone: #f2e4c8;
+  --bone-dim: #d6c6a6;
+  --ink: #2a1f13;
+  --blood: #7a2a18;
+  --gold: #7a2a18;
+  --card: transparent;
+  --line: rgba(60, 40, 20, 0.3);
+  --muted: #514029;
+  --hover: rgba(122, 70, 30, 0.12);
+  --field: rgba(255, 250, 236, 0.6);
+  --focus: rgba(122, 42, 24, 0.2);
+  --accent: #7a2a18;
+  --accent-hover: #96341e;
+  --accent-ink: #f8ecd6;
+  --accent-text: #7a2a18;
+  --bar: #170d07;
+  --bar-ink: #f2e4c8;
+  --foot: #130a05;
+  --f-display: var(--font-aurore), cursive;
+  --f-heading: var(--font-aurore), cursive;
+  --f-body: var(--font-garamond), Georgia, serif;
+  --f-label: var(--font-garamond), Georgia, serif;
+  --sheet: url(/textures/real/sheet-cream.webp);
+  --tile: url(/textures/real/tile-cream.webp);
+
+  background: #1b0f08 url(/textures/real/wall-leather.webp) 0 0 / 900px;
+  font-size: 1.12rem;
+
+  &::before {
+    display: block;
+    background: radial-gradient(90% 70% at 50% 24%, rgba(40, 22, 10, 0.1), rgba(12, 6, 3, 0.56) 72%, rgba(7, 3, 1, 0.8) 100%);
+  }
+
+  .paper,
+  .section-title {
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 100px / 35px round;
+    background: #ece0c4 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+    color: var(--ink);
+  }
+
+  .paper-thin {
+    border-width: 10px;
+    border-image-width: 64px;
+    border-image-outset: 22px;
+  }
+
+  .ornament {
+    display: none;
+  }
+
+  .rich {
+    font-size: 1.16rem;
+    line-height: 1.68;
+  }
+
+  /* Titres à la plume : grands, aérés, sur le papier */
+  .section-title h2,
+  .broadside-head h2,
+  .ledger-head h2,
+  .sheet-head h2,
+  .folio-head h1,
+  .masthead h1,
+  .masthead-name,
+  .dispatch h1,
+  .dispatch h2,
+  .poster h2,
+  .page-header h1,
+  .lost h1,
+  .login h1 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.2;
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .section-title h2,
+  .broadside-head h2,
+  .ledger-head h2,
+  .sheet-head h2 {
+    font-size: clamp(2.5rem, 5.6vw, 3.8rem);
+  }
+
+  .pillar h3,
+  .chronicle-list h3,
+  .steps h3,
+  .clipping h3,
+  .letter-body h2,
+  .board-title,
+  .chapter-title,
+  .topic-title,
+  .spine-title,
+  .rich h2,
+  .rich h3,
+  .rich h4 {
+    font-family: var(--f-display);
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+
+  .board-title,
+  .chapter-title,
+  .topic-title,
+  .pillar h3,
+  .steps h3,
+  .chronicle-list h3 {
+    font-size: 1.7rem;
+    line-height: 1.2;
+  }
+
+  .clipping h3,
+  .letter-body h2 {
+    font-size: 1.9rem;
+  }
+
+  .rich h2 {
+    font-size: 2.2rem;
+    border-bottom-color: var(--line);
+  }
+
+  .rich h3 {
+    font-size: 1.78rem;
+    color: var(--blood);
+  }
+
+  .rich h4 {
+    font-size: 1.5rem;
+  }
+
+  /* Les capitales ne s'écrivent pas à la plume */
+  .rich-gazette h2 {
+    font-size: 2.1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .kicker,
+  .hero-kicker,
+  .link-ink,
+  .clipping time,
+  .dispatch-date,
+  .ledger-cols,
+  .address dt,
+  .hero-ticket-label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-caps: normal;
+    text-transform: none;
+    font-style: italic;
+  }
+
+  /* Boutons : pattes de cuir cousues */
+  .btn {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+
+  .btn-primary,
+  .btn-brass,
+  .btn-primary:hover,
+  .btn-brass:hover {
+    border-image: url(/textures/real/leather-tan.webp) 62 74 fill / 24px 28px / 6px stretch;
+    color: #fff0d6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  }
+
+  .btn-secondary,
+  .btn-secondary:hover {
+    border-image: url(/textures/real/leather-dark.webp) 62 74 fill / 24px 28px / 6px stretch;
+    color: #f3e4c8;
+    text-shadow: 0 1px 2px #000;
+  }
+
+  .copy,
+  .back {
+    border: 1px solid transparent;
+    border-image: url(/textures/real/leather-dark.webp) 62 74 fill / 12px 14px / 3px stretch;
+    color: #f3e4c8;
+    font-weight: 700;
+    text-shadow: 0 1px 2px #000;
+  }
+
+  .copy:hover,
+  .back:hover {
+    color: #fff4dc;
+    background: transparent;
+    border-color: transparent;
+    filter: brightness(1.2);
+  }
+
+  /* Barres : sangle de cuir et sa couture */
+  .topbar {
+    background:
+      linear-gradient(rgba(14, 8, 4, 0.3), rgba(14, 8, 4, 0.5)),
+      #231308 url(/textures/real/band-leather.webp) center / 1600px 100%;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.6);
+    border-bottom: 1px solid #000;
+  }
+
+  .topbar::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 5px;
+    border-bottom: 2px dashed rgba(190, 165, 120, 0.62);
+    pointer-events: none;
+  }
+
+  .brand {
+    font-family: var(--f-display);
+    font-size: 1.7rem;
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .nav-desktop a,
+  .nav-mobile summary {
+    font-size: 1.04rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: none;
+    text-shadow: 0 1px 3px #000;
+  }
+
+  .nav-mobile a {
+    font-size: 1.1rem;
+    text-transform: none;
+  }
+
+  .nav-desktop a::after {
+    background: #e7d3a7;
+  }
+
+  .nav-desktop li:last-child a {
+    border: 1px solid transparent;
+    border-image: url(/textures/real/leather-tan.webp) 62 74 fill / 14px 16px / 3px stretch;
+    color: #fff0d6;
+    background: transparent;
+    text-shadow: 0 1px 2px #000;
+  }
+
+  .nav-desktop li:last-child a:hover {
+    background: transparent;
+    filter: brightness(1.15);
+  }
+
+  .backbar {
+    background: #170d07;
+    border-bottom: 1px solid #000;
+  }
+
+  /* Accueil : le carnet ouvert, la scène collée sur la page de gauche */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 1fr auto;
+    gap: 0.6rem 8%;
+    align-items: center;
+    width: min(1260px, 100% - 2.4rem);
+    min-height: 0;
+    aspect-ratio: 1600 / 996;
+    margin: 2rem auto 1rem;
+    padding: 7% 7.4% 6.4%;
+    overflow: visible;
+    isolation: auto;
+    background: url(/textures/real/journal.webp) center / 100% 100% no-repeat;
+  }
+
+  .hero-shade,
+  .hero-fog,
+  .hero-fireflies,
+  .hero-lantern,
+  .hero-mark,
+  .hero .ornament {
+    display: none;
+  }
+
+  .hero-stage,
+  .hero-stage-video {
+    position: relative;
+    left: auto;
+    top: auto;
+    z-index: 1;
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    overflow: visible;
+    border: 10px solid #f6efdf;
+    border-bottom-width: 26px;
+    translate: none;
+    rotate: -1.8deg;
+    animation: none;
+    will-change: auto;
+    box-shadow: 0 8px 16px rgba(40, 24, 10, 0.42), 0 1px 2px rgba(40, 24, 10, 0.5);
+  }
+
+  .hero-stage::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -30px;
+    z-index: 2;
+    width: 170px;
+    height: 52px;
+    margin-left: -85px;
+    background: url(/textures/real/tape.webp) center / contain no-repeat;
+    rotate: 1.4deg;
+  }
+
+  .hero-video,
+  .hero-scene {
+    filter: sepia(0.42) brightness(1.5) contrast(0.96);
+  }
+
+  .hero-copy {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero-title {
+    display: block;
+    text-align: center;
+  }
+
+  .hero-kicker {
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
+    color: var(--muted);
+    text-shadow: none;
+    text-indent: 0;
+  }
+
+  .hero h1 {
+    margin-top: 0.7rem;
+    font-size: clamp(2.8rem, 5.4vw, 5rem);
+    line-height: 1.2;
+    color: #241a0f;
+    text-shadow: none;
+  }
+
+  .hero-sub {
+    max-width: none;
+    margin-top: 0.6rem;
+    font-size: clamp(1.1rem, 1.7vw, 1.36rem);
+    font-style: italic;
+    line-height: 1.42;
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .hero-actions {
+    margin-top: 1.1rem;
+  }
+
+  .hero-ticket {
+    grid-column: 1;
+    grid-row: 2;
+    justify-content: center;
+    width: 100%;
+    margin: 0.2rem 0 0;
+    padding: 0.2rem 0;
+    border: 0;
+    border-image: none;
+    background: none;
+    animation: none;
+  }
+
+  .hero-ticket code {
+    font-size: 0.92rem;
+  }
+
+  /* Titres : une bande de papier scotchée sur le cuir */
+  .section-title {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    padding: 0.5rem clamp(1.4rem, 4vw, 3rem) 0.6rem;
+    rotate: -0.5deg;
+  }
+
+  .section-title::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -32px;
+    width: 150px;
+    height: 46px;
+    margin-left: -75px;
+    background: url(/textures/real/tape.webp) center / contain no-repeat;
+    pointer-events: none;
+  }
+
+  .section-title-light h2 {
+    color: var(--ink);
+    text-shadow: none;
+  }
+
+  .broadside {
+    rotate: -0.2deg;
+  }
+
+  .pillar:nth-child(odd) {
+    rotate: -0.7deg;
+  }
+
+  .pillar:nth-child(even) {
+    rotate: 0.6deg;
+  }
+
+  .pillar {
+    padding-top: 3rem;
+  }
+
+  .board-row:hover .board-num {
+    transform: none;
+  }
+
+  .board-num,
+  .chapter-num,
+  .step-num {
+    font-family: var(--f-body);
+    font-weight: 700;
+    color: var(--blood);
+  }
+
+  /* Tirages photo collés dans le carnet */
+  .prints {
+    gap: 2.6rem 2rem;
+  }
+
+  .print {
+    position: relative;
+    padding: 0.55rem 0.55rem 0.3rem;
+    border: 0;
+    border-image: none;
+    background: #f6efdf;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .prints li:nth-child(3n + 1) .print {
+    rotate: -1.6deg;
+  }
+
+  .prints li:nth-child(3n + 2) .print {
+    rotate: 1.2deg;
+  }
+
+  .prints li:nth-child(3n) .print {
+    rotate: -0.6deg;
+  }
+
+  .print::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -22px;
+    z-index: 2;
+    width: 130px;
+    height: 40px;
+    margin-left: -65px;
+    background: url(/textures/real/tape.webp) center / contain no-repeat;
+  }
+
+  .print img {
+    box-shadow: none;
+    filter: sepia(0.34) contrast(1.02);
+  }
+
+  .print figcaption {
+    padding-top: 0.5rem;
+    font-family: var(--f-display);
+    font-size: 1.3rem;
+    font-style: normal;
+    color: var(--ink);
+  }
+
+  .chronicle {
+    background: none;
+    box-shadow: none;
+  }
+
+  .chronicle::before,
+  .band-img {
+    display: none;
+  }
+
+  .chronicle .wrap {
+    padding: 2.4rem clamp(1rem, 4vw, 3rem);
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 100px / 35px round;
+    background: #ece0c4 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+  }
+
+  .chronicle .section-title {
+    border: 0;
+    border-image: none;
+    background: none;
+    rotate: none;
+  }
+
+  .chronicle .section-title::before {
+    display: none;
+  }
+
+  .chronicle-list li {
+    border-top: 1px solid var(--line);
+  }
+
+  .chronicle-year {
+    font-family: var(--f-display);
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--blood);
+  }
+
+  .chronicle-list h3 {
+    color: var(--ink);
+  }
+
+  .chronicle-list p {
+    color: var(--ink);
+  }
+
+  .vote {
+    background: none;
+    box-shadow: none;
+  }
+
+  .poster {
+    width: min(640px, 100%);
+  }
+
+  .poster-kicker {
+    font-family: var(--f-label);
+    font-size: 1.14rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .poster h2 {
+    padding: 0;
+    border: 0;
+    font-size: clamp(2.8rem, 8vw, 4.4rem);
+  }
+
+  .poster-art {
+    border: 8px solid #f6efdf;
+    box-shadow: 0 6px 12px rgba(40, 24, 10, 0.4);
+    filter: sepia(0.34);
+  }
+
+  .poster-text {
+    font-size: 1.24rem;
+  }
+
+  .page-header::before {
+    background: linear-gradient(180deg, rgba(14, 8, 4, 0.45), rgba(14, 8, 4, 0.55) 60%, rgba(20, 11, 6, 0.96) 100%);
+  }
+
+  .page-header h1 {
+    font-size: clamp(3rem, 8vw, 5.4rem);
+    color: #fff3da;
+    text-shadow: 0 2px 8px #000;
+  }
+
+  .page-header .kicker {
+    color: #f0d6a2;
+  }
+
+  .page-header-sub {
+    color: #fff4dc;
+    text-shadow: 0 1px 4px #000;
+  }
+
+  .lost h1 {
+    color: var(--bone);
+  }
+
+  .spine {
+    background: #241409 url(/textures/real/wall-leather.webp) 0 0 / 900px;
+    box-shadow: 0 0 0 1px #000, 0 8px 14px rgba(0, 0, 0, 0.5);
+  }
+
+  .spine-title,
+  .spine-list a {
+    color: #f6e9cf;
+  }
+
+  .spine-title {
+    font-size: 1.9rem;
+  }
+
+  .spine-list a {
+    font-family: var(--f-body);
+    font-size: 1.1rem;
+    border-top-color: rgba(190, 165, 120, 0.28);
+  }
+
+  .spine-list a span {
+    color: #e6c690;
+  }
+
+  .spine-list a:hover {
+    background: rgba(190, 165, 120, 0.16);
+  }
+
+  .spine-list a[aria-current='page'],
+  .spine-list a[aria-current='page'] span {
+    color: #fff4dc;
+    background: var(--accent);
+  }
+
+  .topic-group h2 {
+    font-family: var(--f-display);
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--bone);
+  }
+
+  .search label {
+    color: var(--bone);
+  }
+
+  .search input {
+    background: #efe4ca;
+  }
+
+  .notice {
+    border: 16px solid transparent;
+    border-image: var(--sheet) 150 / 64px / 22px round;
+    background: #ece0c4 var(--tile) 0 0 / 620px;
+    background-clip: padding-box;
+    box-shadow: none;
+  }
+
+  .loader-img {
+    filter: sepia(0.4);
+    opacity: 0.62;
+  }
+
+  .loader-label {
+    font-size: 1rem;
+    color: #f6e9cf;
+  }
+
+  .loader-tip {
+    color: #f8efdc;
+  }
+
+  .address-paper dt,
+  .hero-ticket-label {
+    color: var(--blood);
+  }
+}
+
+/* Page d'accueil du journal sur téléphone : une seule page, plus de double page */
+@media (max-width: 900px) {
+  .site[data-design='carnet'] {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      aspect-ratio: auto;
+      gap: 1.4rem;
+      width: calc(100% - 2.2rem);
+      margin-top: 1.6rem;
+      padding: 1.4rem 1rem;
+      border: 12px solid transparent;
+      border-image: var(--sheet) 150 / 64px / 22px round;
+      background: #ece0c4 var(--tile) 0 0 / 620px;
+      background-clip: padding-box;
+    }
+
+    .hero-copy {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .hero-stage,
+    .hero-stage-video {
+      grid-column: 1;
+      grid-row: 2;
+      margin-top: 0.8rem;
+    }
+
+    .hero-ticket {
+      grid-column: 1;
+      grid-row: 3;
+    }
+  }
+}
+
+@media (max-width: 620px) {
+  .site[data-design='wanted'] .hero {
+    width: calc(100% - 2.2rem);
+    margin-top: 2rem;
+  }
+
+  .site:is([data-design='wanted'], [data-design='carnet']) .prints li:nth-child(n) .print {
+    rotate: none;
+  }
+}

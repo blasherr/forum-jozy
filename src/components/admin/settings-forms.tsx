@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useCallback, useMemo, useState } from 'react';
 import type { NavItem } from '@/db/schema';
 import {
+  DESIGNS,
   FONT_OPTIONS,
   HOME_SECTIONS,
   SEALS,
@@ -14,7 +15,9 @@ import {
   type ThemeSettings,
 } from '@/lib/content/schemas';
 import type { RichDoc } from '@/lib/richtext/types';
+import { DESIGN_INFO } from '@/lib/content/labels';
 import { useAdmin } from './context';
+import { Icon } from './Icon';
 import {
   CheckField,
   MediaField,
@@ -91,13 +94,15 @@ export function HomeForm({ initial }: { initial: HomeSettings }) {
   return (
     <div className="page">
       <PageHead title="Page d’accueil" text="Chaque bloc de la première page, dans l’ordre où il s’affiche." />
-      <div className="tabs" role="tablist">
+      <div className="split">
+      <div className="tabs" role="tablist" aria-orientation="vertical">
         {tabs.map(([key, label]) => (
           <button key={key} type="button" role="tab" aria-selected={tab === key} onClick={() => setTab(key as string)}>
             {label}
           </button>
         ))}
       </div>
+      <div className="split-main">
 
       {tab === 'hero' ? (
         <section className="panel">
@@ -159,10 +164,10 @@ export function HomeForm({ initial }: { initial: HomeSettings }) {
                 <CheckField label={SECTION_LABELS[key]} checked onChange={() => toggle(key)} />
                 <span className="repeat-tools">
                   <button type="button" aria-label="Monter" disabled={i === 0} onClick={() => shift(key, -1)}>
-                    ▲
+                    <Icon name="up" size={16} />
                   </button>
                   <button type="button" aria-label="Descendre" disabled={i === data.order.length - 1} onClick={() => shift(key, 1)}>
-                    ▼
+                    <Icon name="down" size={16} />
                   </button>
                 </span>
               </li>
@@ -301,6 +306,8 @@ export function HomeForm({ initial }: { initial: HomeSettings }) {
       ) : null}
 
       <SaveBar dirty={dirty} saving={saving} onSave={save} />
+      </div>
+      </div>
     </div>
   );
 }
@@ -469,9 +476,45 @@ export function ThemeForm({ initial, defaults }: { initial: ThemeSettings; defau
   );
   return (
     <div className="page">
-      <PageHead title="Apparence" text="Couleurs, polices et matières de tout le site." />
+      <PageHead title="Apparence" text="Le design du site, puis le détail de ses couleurs et polices." />
+      <section className="panel">
+        <div className="panel-head">
+          <h2>Design du site</h2>
+        </div>
+        <ul className="designs">
+          {DESIGNS.map((key) => {
+            const info = DESIGN_INFO[key];
+            const on = data.design === key;
+            return (
+              <li key={key} className={`design-card ${on ? 'is-on' : ''}`}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`/art/design-${key}.webp`} alt="" width={640} height={400} loading="lazy" />
+                <div className="design-body">
+                  <h3>
+                    {info.name}
+                    {key === initial.design ? <span className="badge badge-published">En ligne</span> : null}
+                  </h3>
+                  <p>{info.text}</p>
+                  <div className="design-actions">
+                    <a className="a-btn" href={`/design/${key}`} target="_blank" rel="noopener">
+                      <Icon name="eye" size={16} />
+                      Aperçu
+                    </a>
+                    <button type="button" className="a-btn a-btn-primary" disabled={on} onClick={() => set({ ...data, design: key })}>
+                      {on ? <Icon name="check" size={16} /> : null}
+                      {on ? 'Sélectionné' : 'Choisir'}
+                    </button>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="hint">L’aperçu s’ouvre sur le vrai site et ne change rien pour les visiteurs. Choisissez, puis enregistrez pour publier.</p>
+      </section>
       <section className="panel">
         <h2>Couleurs</h2>
+        {data.design !== 'bureau' ? <p className="hint">Les couleurs et polices ci-dessous s’appliquent au design Bureau 1847.</p> : null}
         <div className="colors">
           {COLOR_FIELDS.map(([key, label]) => (
             <label key={key} className="color-field">

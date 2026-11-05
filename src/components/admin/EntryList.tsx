@@ -5,6 +5,7 @@ import { useState } from 'react';
 import type { CollectionInfo } from '@/lib/content/labels';
 import { formatDateTime } from '@/lib/format';
 import { useAdmin } from './context';
+import { Icon } from './Icon';
 
 interface Row {
   id: string;
@@ -45,6 +46,7 @@ export function EntryList({ info, items }: { info: CollectionInfo; items: Row[] 
           </p>
         </div>
         <Link className="a-btn a-btn-primary" href={`/admin/contenu/${info.path}/nouveau`}>
+          <Icon name="plus" size={16} />
           Ajouter
         </Link>
       </header>
@@ -65,7 +67,7 @@ export function EntryList({ info, items }: { info: CollectionInfo; items: Row[] 
                 {info.sortable ? (
                   <td className="order">
                     <button type="button" aria-label={`Monter ${row.title}`} disabled={i === 0} onClick={() => move(i, -1)}>
-                      ▲
+                      <Icon name="up" size={16} />
                     </button>
                     <button
                       type="button"
@@ -73,7 +75,7 @@ export function EntryList({ info, items }: { info: CollectionInfo; items: Row[] 
                       disabled={i === rows.length - 1}
                       onClick={() => move(i, 1)}
                     >
-                      ▼
+                      <Icon name="down" size={16} />
                     </button>
                   </td>
                 ) : null}

@@ -7,6 +7,8 @@ import { requirePage } from '@/lib/security/page-guard';
 import { headers } from 'next/headers';
 import '@/styles/site.css';
 import '@/styles/rich.css';
+import '@/styles/designs.css';
+import '@/styles/designs-real.css';
 
 export const metadata: Metadata = { title: 'Aperçu', robots: { index: false, follow: false } };
 
@@ -18,7 +20,7 @@ export default async function PreviewPage({ params }: { params: Promise<{ id: st
   const [entry, theme, h] = await Promise.all([getEntryById(id), getSetting('theme'), headers()]);
   if (!entry) notFound();
   return (
-    <div className="site">
+    <div className="site" data-design={theme.design}>
       <style nonce={h.get('x-nonce') ?? undefined}>{themeCss(theme)}</style>
       <div className="preview-banner">Aperçu : cette page n’est pas forcément publiée.</div>
       <div className="wrap wrap-narrow page-top">

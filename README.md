@@ -122,3 +122,21 @@ protégée par la CSP.
 ## Sécurité
 
 Voir [docs/AUDIT-SECURITE.md](docs/AUDIT-SECURITE.md).
+
+## Designs du site
+
+Sept designs sont fournis : Panel > Apparence pour les comparer (aperçu réservé à ce navigateur, rien n'est publié) puis en choisir un.
+
+| Design | Principe |
+| --- | --- |
+| Bureau 1847 | Papier ancien, bois sombre, plaques rivetées (`src/styles/site.css`). Enregistré dans Git sous l'étiquette `design-bureau-1847`. |
+| Le Saloon, Avis de recherche, Carnet de route | Matières réelles (`src/styles/designs-real.css`). |
+| Sang & Cendre, La Gazette, Cinéma | Directions graphiques (`src/styles/designs.css`). |
+
+Les matières de `public/textures/real/` viennent de photos de [Poly Haven](https://polyhaven.com) et d'[ambientCG](https://ambientcg.com), en licence CC0. Les objets (laiton, planches, cuir cousu, cachets, papier déchiré, carnet) sont rendus avec une vraie lumière dans Blender :
+
+```bash
+python -I scripts/art/real_compose.py <dossier des photos> <dossier de rendu>
+blender -b --python scripts/art/real_render.py -- <dossier de rendu>/jobs.json
+python -I scripts/art/real_finish.py <dossier de rendu>/out
+```

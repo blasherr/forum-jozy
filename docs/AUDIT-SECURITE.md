@@ -9,8 +9,8 @@ Audit réalisé le 4 novembre 2026 sur la version locale du site, en build de pr
 | Faille critique ou élevée trouvée | Aucune |
 | Failles moyennes et faibles trouvées | 12 par les deux relectures indépendantes, toutes corrigées |
 | Défauts trouvés par les tests réels | 3, tous corrigés (voir plus bas) |
-| Attaques automatisées (`npm run pentest`) | 175 contrôles sur 175 réussis |
-| Tests unitaires (`npm test`) | 69 sur 69 réussis |
+| Attaques automatisées (`npm run pentest`) | 186 contrôles sur 186 réussis |
+| Tests unitaires (`npm test`) | 71 sur 71 réussis |
 | Dépendances (`npm audit`) | 0 vulnérabilité connue, versions figées |
 | Règlement et histoire importés | 8 299 mots comparés au GitBook, aucun manquant |
 
@@ -49,7 +49,10 @@ Trouvés par les tests réels :
 | Problème | Correction |
 | --- | --- |
 | La CSP renforcée des images était écrasée par le proxy | Le proxy applique `default-src 'none'; sandbox` sur `/media/` |
-| Trusted Types bloquait le chargement de scripts légitimes de Next | Politique limitée aux fichiers de `/_next/static/` (`public/tt-policy.js`), 0 violation constatée en navigation |
+| Trusted Types bloquait le chargement de scripts légitimes de Next | Politique limitée aux fichiers de `/_next/static/` (`src/instrumentation-client.ts`), 0 violation constatée en navigation |
+| Pages 404 blanches en production : la page d'erreur minimale de Next ne contenait pas la politique Trusted Types | Politique déplacée dans `src/instrumentation-client.ts`, exécutée avant l'hydratation sur toutes les pages |
+| Zod testait `new Function()` au démarrage du panel, signalé par la CSP | `z.config({ jitless: true })`, plus aucune violation sur le panel |
+| Aperçu des designs par lien | Réservé aux comptes connectés, liste fermée côté serveur, cookie `HttpOnly`, `SameSite=Lax`, `__Host-` en ligne ; valeur ignorée si elle n'est pas dans la liste |
 | Une session partielle restait utilisable pour l'aperçu des brouillons | L'aperçu passe par le même contrôle que le panel |
 
 ## Protections en place

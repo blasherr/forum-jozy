@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from 'next';
-import { headers } from 'next/headers';
 import {
+  Abril_Fatface,
+  Anton,
+  Barlow,
+  Barlow_Condensed,
+  Cormorant_Garamond,
   Courier_Prime,
   EB_Garamond,
   Ewert,
   Holtwood_One_SC,
   IM_Fell_English,
+  La_Belle_Aurore,
+  Inter,
   Libre_Caslon_Text,
   Old_Standard_TT,
   Playfair_Display,
@@ -29,9 +35,16 @@ const caslon = Libre_Caslon_Text({ weight: ['400', '700'], style: ['normal', 'it
 const oldstandard = Old_Standard_TT({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-oldstandard', display: 'swap', preload: false });
 const garamond = EB_Garamond({ subsets: ['latin'], variable: '--font-garamond', display: 'swap', preload: false });
 const mono = Courier_Prime({ weight: ['400', '700'], subsets: ['latin'], variable: '--font-mono', display: 'swap', preload: false });
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap', preload: false });
+const anton = Anton({ weight: '400', subsets: ['latin'], variable: '--font-anton', display: 'swap', preload: false });
+const barlow = Barlow({ weight: ['400', '500', '600', '700'], style: ['normal', 'italic'], subsets: ['latin'], variable: '--font-barlow', display: 'swap', preload: false });
+const barlowCondensed = Barlow_Condensed({ weight: ['500', '600', '700'], subsets: ['latin'], variable: '--font-barlow-condensed', display: 'swap', preload: false });
+const abril = Abril_Fatface({ weight: '400', subsets: ['latin'], variable: '--font-abril', display: 'swap', preload: false });
+const cormorant = Cormorant_Garamond({ weight: ['500', '600', '700'], style: ['normal', 'italic'], subsets: ['latin'], variable: '--font-cormorant', display: 'swap', preload: false });
+const aurore = La_Belle_Aurore({ weight: '400', subsets: ['latin'], variable: '--font-aurore', display: 'swap', preload: false });
 const plume = Mrs_Saint_Delafield({ weight: '400', subsets: ['latin'], variable: '--font-plume', display: 'swap', preload: false });
 
-const fonts = [rye, sancreek, ewert, smokum, holtwood, playfair, fell, caslon, oldstandard, garamond, mono, plume]
+const fonts = [rye, sancreek, ewert, smokum, holtwood, playfair, fell, caslon, oldstandard, garamond, mono, plume, inter, anton, barlow, barlowCondensed, abril, cormorant, aurore]
   .map((f) => f.variable)
   .join(' ');
 
@@ -46,15 +59,9 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, email: false, address: false },
 };
 
-export default async function RootLayout({ children }: { children: ReactNode }) {
-  const nonce = (await headers()).get('x-nonce') ?? undefined;
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr" className={fonts} data-scroll-behavior="smooth">
-      <head>
-        {/* Doit s'exécuter avant tout autre script : voir public/tt-policy.js */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="/tt-policy.js" nonce={nonce} />
-      </head>
       <body>{children}</body>
     </html>
   );
