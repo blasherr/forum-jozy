@@ -65,7 +65,7 @@ CSS libre. Toutes les requêtes SQL passent par des paramètres liés. Tous les 
 le site public. Médias limités au site (`media-src 'self'`). HSTS, COOP, COEP, CORP, protection contre l'intégration dans une
 page tierce.
 
-**Connexion.** Argon2id (64 Mio, 3 passes) avec poivre conservé hors de la base. 2FA TOTP obligatoire en production, code non
+**Connexion.** Argon2id (64 Mio, 3 passes) avec poivre conservé hors de la base. 2FA TOTP facultative (imposée à tous avec `REQUIRE_2FA=true`), code non
 rejouable, codes de secours à usage unique, secret chiffré en AES-256-GCM. Mot de passe redemandé pour les actions sensibles.
 Aucun compte par défaut, aucune inscription publique, aucun « mot de passe oublié » par e-mail.
 
@@ -92,6 +92,9 @@ contenu, avec restauration.
 - **Blocage temporaire d'un compte.** Plus de 200 essais en une heure depuis de nombreuses adresses bloquent la connexion à ce
   compte, même avec le bon mot de passe. `npm run admin:reset` lève le blocage. C'est un choix : un verrouillage plus dur serait
   plus facile à détourner.
+- **2FA non imposée.** À la demande du propriétaire, elle n'est plus obligatoire : un compte qui ne l'active pas n'est protégé que
+  par son mot de passe. Les plafonds d'essais limitent les attaques en ligne, mais un mot de passe déjà fuité suffit.
+  `REQUIRE_2FA=true` la rend de nouveau obligatoire.
 - **Panel sans Trusted Types.** L'éditeur en a besoin pour le copier-coller. La CSP stricte reste active dans le panel.
 - **Base de données non chiffrée sur le disque.** Les mots de passe et secrets 2FA y sont protégés, mais pas les contenus. Protégez
   l'accès au serveur et aux sauvegardes.

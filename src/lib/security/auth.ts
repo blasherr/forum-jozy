@@ -33,8 +33,8 @@ const tooMany = (retryAfter: number) =>
 /**
  * Connexion. Plafonds par IP et par couple IP/compte, plus un plafond large par compte contre les
  * attaques distribuées. Il n'y a volontairement pas de verrouillage strict du compte : il offrirait à
- * n'importe qui le moyen d'empêcher le propriétaire de se connecter, alors que la 2FA obligatoire
- * rend déjà le mot de passe seul insuffisant.
+ * n'importe qui le moyen d'empêcher le propriétaire de se connecter. La 2FA, activable dans Compte
+ * (ou imposée par REQUIRE_2FA=true), rend le mot de passe seul insuffisant.
  * Le traitement d'un échec est identique que le compte existe ou non : ni le message ni la durée
  * ne révèlent quoi que ce soit.
  */

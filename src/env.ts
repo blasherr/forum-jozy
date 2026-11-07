@@ -41,7 +41,8 @@ function load() {
     ...e,
     APP_ORIGIN: origin.origin,
     isProd: e.NODE_ENV === 'production',
-    require2fa: e.REQUIRE_2FA ? e.REQUIRE_2FA === 'true' : e.NODE_ENV === 'production',
+    // Facultative par défaut : chacun peut l'activer dans Compte. REQUIRE_2FA=true l'impose à tous.
+    require2fa: e.REQUIRE_2FA === 'true',
   };
 }
 
